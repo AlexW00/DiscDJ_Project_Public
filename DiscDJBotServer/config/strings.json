@@ -1,0 +1,27 @@
+{
+    "command": {
+        "error": "❗ There was an error executing this command",
+        "illegalLength": "📏 Please choose a longer song title"
+    },
+    "channel": {
+        "illegalChannel": "🔈 Please choose a voice/stage channel",
+        "notConnected": "🔗 DiscDJ is not connected to a voice/stage channel (use /join to connect)",
+        "joinSuccess": "➡️ DiscDJ joined ",
+        "disconnectSuccess": "🚪 DiscDJ sucessfully disconnected"
+    },
+    "song": {
+        "illegalLength": "📏 Please choose a shorter song",
+        "illegalSong": "🙅‍♂️ Please choose a different song",
+        "illegalTitle": "🏷 Please choose a different title",
+        "notFound": "🔎 Couldn't find a song with this title",
+        "added_1": "🎊 Successfully added '",
+        "added_2": "' to the queue at spot ",
+        "currentSongStandardEmbedDescription": "▒▁▁▁╭\\_<a:dance:774033961248751626>\\_╮▁▁▁▒"
+    },
+    "queue": {
+        "alreadyInQueue_1": "⏳ You are already in queue with '",
+        "alreadyInQueue_2": "' at spot ",
+        "isFull": "⛔ The queue is currently full - try adding your song again when the next song gets played",
+        "isEmpty": "🙄 The queue is currently empty - try adding a song using /play!"
+    }
+}

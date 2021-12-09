@@ -1,0 +1,24 @@
+{
+  "name": "discdjredis",
+  "version": "1.0.0",
+  "description": "Redis server for the DISCDJ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "redis"
+  ],
+  "author": "Gen#1234",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-load-routes": "^1.0.1",
+    "redis": "^3.1.2",
+    "redis-lock": "^0.1.4",
+    "string-hash": "^1.1.3",
+    "superagent": "^6.1.0",
+    "winston": "^3.3.3"
+  }
+}

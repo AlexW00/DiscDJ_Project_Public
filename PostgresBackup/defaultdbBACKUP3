@@ -1,0 +1,1134 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.4
+-- Dumped by pg_dump version 13.3
+
+-- Started on 2021-10-15 10:01:23 CEST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 6 (class 2615 OID 16402)
+-- Name: testSchema; Type: SCHEMA; Schema: -; Owner: doadmin
+--
+
+CREATE SCHEMA "testSchema";
+
+
+ALTER SCHEMA "testSchema" OWNER TO doadmin;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 204 (class 1259 OID 16446)
+-- Name: guilds; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".guilds (
+    id character varying(25) NOT NULL,
+    "isPremium" boolean NOT NULL
+);
+
+
+ALTER TABLE "testSchema".guilds OWNER TO doadmin;
+
+--
+-- TOC entry 215 (class 1259 OID 16590)
+-- Name: interactions; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".interactions (
+    id integer NOT NULL,
+    upvotes smallint,
+    downvotes smallint,
+    saves smallint,
+    skipped boolean NOT NULL
+);
+
+
+ALTER TABLE "testSchema".interactions OWNER TO doadmin;
+
+--
+-- TOC entry 214 (class 1259 OID 16588)
+-- Name: interactions_id_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema".interactions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema".interactions_id_seq OWNER TO doadmin;
+
+--
+-- TOC entry 4099 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: interactions_id_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema".interactions_id_seq OWNED BY "testSchema".interactions.id;
+
+
+--
+-- TOC entry 216 (class 1259 OID 16674)
+-- Name: library; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".library (
+    "userID" character varying NOT NULL,
+    "guildID" character varying NOT NULL,
+    "songID" integer NOT NULL,
+    date date
+);
+
+
+ALTER TABLE "testSchema".library OWNER TO doadmin;
+
+--
+-- TOC entry 209 (class 1259 OID 16523)
+-- Name: payments; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".payments (
+    id integer NOT NULL,
+    "premiumID" integer NOT NULL,
+    "transactionCode" text NOT NULL,
+    date date NOT NULL
+);
+
+
+ALTER TABLE "testSchema".payments OWNER TO doadmin;
+
+--
+-- TOC entry 207 (class 1259 OID 16519)
+-- Name: payments_paymentID_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema"."payments_paymentID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema"."payments_paymentID_seq" OWNER TO doadmin;
+
+--
+-- TOC entry 4100 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: payments_paymentID_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema"."payments_paymentID_seq" OWNED BY "testSchema".payments.id;
+
+
+--
+-- TOC entry 208 (class 1259 OID 16521)
+-- Name: payments_premiumID_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema"."payments_premiumID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema"."payments_premiumID_seq" OWNER TO doadmin;
+
+--
+-- TOC entry 4101 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: payments_premiumID_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema"."payments_premiumID_seq" OWNED BY "testSchema".payments."premiumID";
+
+
+--
+-- TOC entry 206 (class 1259 OID 16505)
+-- Name: premium_guilds; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".premium_guilds (
+    id integer NOT NULL,
+    "guildID" text NOT NULL
+);
+
+
+ALTER TABLE "testSchema".premium_guilds OWNER TO doadmin;
+
+--
+-- TOC entry 205 (class 1259 OID 16503)
+-- Name: premium_guilds_premiumID_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema"."premium_guilds_premiumID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema"."premium_guilds_premiumID_seq" OWNER TO doadmin;
+
+--
+-- TOC entry 4102 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: premium_guilds_premiumID_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema"."premium_guilds_premiumID_seq" OWNED BY "testSchema".premium_guilds.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16538)
+-- Name: scores; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".scores (
+    "userID" text NOT NULL,
+    "guildID" text NOT NULL,
+    score integer
+);
+
+
+ALTER TABLE "testSchema".scores OWNER TO doadmin;
+
+--
+-- TOC entry 213 (class 1259 OID 16562)
+-- Name: song_queue; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".song_queue (
+    id integer NOT NULL,
+    "userID" text NOT NULL,
+    "guildID" text NOT NULL,
+    "songID" integer NOT NULL,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE "testSchema".song_queue OWNER TO doadmin;
+
+--
+-- TOC entry 212 (class 1259 OID 16558)
+-- Name: song_queue_songID_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema"."song_queue_songID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema"."song_queue_songID_seq" OWNER TO doadmin;
+
+--
+-- TOC entry 4103 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: song_queue_songID_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema"."song_queue_songID_seq" OWNED BY "testSchema".song_queue."songID";
+
+
+--
+-- TOC entry 211 (class 1259 OID 16556)
+-- Name: song_queue_spotID_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema"."song_queue_spotID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema"."song_queue_spotID_seq" OWNER TO doadmin;
+
+--
+-- TOC entry 4104 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: song_queue_spotID_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema"."song_queue_spotID_seq" OWNED BY "testSchema".song_queue.id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16421)
+-- Name: songs; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".songs (
+    id integer NOT NULL,
+    title character varying(100) NOT NULL,
+    url text NOT NULL,
+    "durationSeconds" smallint NOT NULL
+);
+
+
+ALTER TABLE "testSchema".songs OWNER TO doadmin;
+
+--
+-- TOC entry 202 (class 1259 OID 16419)
+-- Name: songs_id_seq; Type: SEQUENCE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE SEQUENCE "testSchema".songs_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "testSchema".songs_id_seq OWNER TO doadmin;
+
+--
+-- TOC entry 4105 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: songs_id_seq; Type: SEQUENCE OWNED BY; Schema: testSchema; Owner: doadmin
+--
+
+ALTER SEQUENCE "testSchema".songs_id_seq OWNED BY "testSchema".songs.id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 16411)
+-- Name: users; Type: TABLE; Schema: testSchema; Owner: doadmin
+--
+
+CREATE TABLE "testSchema".users (
+    id character varying(25) NOT NULL,
+    "googleAuthToken" character varying(255),
+    "spotifyAuthToken" character varying(255)
+);
+
+
+ALTER TABLE "testSchema".users OWNER TO doadmin;
+
+--
+-- TOC entry 3914 (class 2604 OID 16593)
+-- Name: interactions id; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".interactions ALTER COLUMN id SET DEFAULT nextval('"testSchema".interactions_id_seq'::regclass);
+
+
+--
+-- TOC entry 3910 (class 2604 OID 16526)
+-- Name: payments id; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".payments ALTER COLUMN id SET DEFAULT nextval('"testSchema"."payments_paymentID_seq"'::regclass);
+
+
+--
+-- TOC entry 3911 (class 2604 OID 16527)
+-- Name: payments premiumID; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".payments ALTER COLUMN "premiumID" SET DEFAULT nextval('"testSchema"."payments_premiumID_seq"'::regclass);
+
+
+--
+-- TOC entry 3909 (class 2604 OID 16508)
+-- Name: premium_guilds id; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".premium_guilds ALTER COLUMN id SET DEFAULT nextval('"testSchema"."premium_guilds_premiumID_seq"'::regclass);
+
+
+--
+-- TOC entry 3912 (class 2604 OID 16565)
+-- Name: song_queue id; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".song_queue ALTER COLUMN id SET DEFAULT nextval('"testSchema"."song_queue_spotID_seq"'::regclass);
+
+
+--
+-- TOC entry 3913 (class 2604 OID 16566)
+-- Name: song_queue songID; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".song_queue ALTER COLUMN "songID" SET DEFAULT nextval('"testSchema"."song_queue_songID_seq"'::regclass);
+
+
+--
+-- TOC entry 3908 (class 2604 OID 16424)
+-- Name: songs id; Type: DEFAULT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".songs ALTER COLUMN id SET DEFAULT nextval('"testSchema".songs_id_seq'::regclass);
+
+
+--
+-- TOC entry 4081 (class 0 OID 16446)
+-- Dependencies: 204
+-- Data for Name: guilds; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".guilds (id, "isPremium") FROM stdin;
+0	f
+1	f
+1234	f
+sdgdsg	f
+{userID}	f
+'23'	f
+24	f
+25	f
+125	f
+131	f
+132	f
+133	f
+144	f
+145	f
+112233	f
+13213	f
+12421424	f
+132132	f
+54321	f
+54322	f
+54323	f
+54324	f
+54325	f
+54326	f
+54327	f
+54328	f
+54400	f
+54401	f
+54402	f
+54403	f
+21323	f
+213232	f
+2132322	f
+21323222	f
+213232221	f
+123	f
+dshiadb3	f
+dshiadb31	f
+12331	f
+2	f
+26	f
+fsdif83	f
+dia33	f
+dia332	f
+dia3322	f
+fsdif832	f
+fsdif8322	f
+hifhdsu8	f
+1sass	f
+Newshit	f
+Newshitd	f
+Newshitds	f
+50	f
+undefined	f
+hifhdsu811	f
+hifhdsu8111	f
+hifhdsu8111s	f
+hifhdsu8111ss	f
+hifhdsu8111sss	f
+sdn3	f
+sdn3d	f
+sdn3ds	f
+sdn3dss	f
+sdn3dsss	f
+sdn3dsssds	f
+sdn3dsssdsss	f
+as33	f
+as33s	f
+as33sd	f
+as33sds	f
+as33sdss	f
+as33sdsss	f
+as33sdssss	f
+as33sdssssa	f
+as33sdssssaa	f
+ssa333	f
+ssa333ss	f
+guildID-here	f
+871361110601769010	f
+871361110601769011	f
+871361110601769012	f
+87136111060176904	f
+\.
+
+
+--
+-- TOC entry 4092 (class 0 OID 16590)
+-- Dependencies: 215
+-- Data for Name: interactions; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".interactions (id, upvotes, downvotes, saves, skipped) FROM stdin;
+1	0	0	0	f
+50	0	0	0	f
+51	0	0	0	f
+52	0	0	0	f
+53	0	0	0	f
+54	0	0	0	f
+55	0	0	0	f
+56	0	0	0	f
+57	0	0	0	f
+58	0	0	0	f
+59	0	0	0	f
+65	0	0	0	f
+66	0	0	0	f
+67	0	0	0	f
+68	0	0	0	f
+69	0	0	0	f
+70	0	0	0	f
+71	0	0	0	f
+72	0	0	0	f
+73	0	0	0	f
+74	0	0	0	f
+75	0	0	0	f
+76	0	0	0	f
+79	0	0	0	f
+80	0	0	0	f
+81	0	0	0	f
+82	0	0	0	f
+83	0	0	0	f
+84	1	1	1	f
+85	0	0	0	f
+86	0	0	0	f
+87	0	0	0	f
+88	1	0	0	f
+89	1	0	0	f
+90	1	0	0	f
+91	1	0	0	f
+92	1	0	0	f
+93	1	0	0	f
+94	1	0	0	f
+95	1	0	0	f
+96	1	0	0	f
+97	1	0	0	f
+98	1	0	0	f
+99	1	0	0	f
+100	2	1	1	f
+101	2	1	1	f
+119	0	0	0	f
+120	0	0	0	f
+121	0	0	0	f
+122	0	0	0	f
+123	0	0	0	f
+124	0	0	0	f
+125	0	0	0	f
+126	0	0	0	f
+127	0	0	0	f
+128	0	0	0	f
+129	0	0	0	f
+130	0	0	0	f
+131	0	0	0	f
+132	0	0	0	f
+133	0	0	0	f
+134	0	0	0	f
+135	0	0	0	f
+136	0	0	0	f
+\.
+
+
+--
+-- TOC entry 4093 (class 0 OID 16674)
+-- Dependencies: 216
+-- Data for Name: library; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".library ("userID", "guildID", "songID", date) FROM stdin;
+1	50	4	2009-12-31
+2	50	27	2021-08-17
+4	50	27	2021-08-17
+79	50	27	2021-08-17
+78	50	27	2021-08-17
+1	50	27	2021-08-23
+\.
+
+
+--
+-- TOC entry 4086 (class 0 OID 16523)
+-- Dependencies: 209
+-- Data for Name: payments; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".payments (id, "premiumID", "transactionCode", date) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4083 (class 0 OID 16505)
+-- Dependencies: 206
+-- Data for Name: premium_guilds; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".premium_guilds (id, "guildID") FROM stdin;
+\.
+
+
+--
+-- TOC entry 4087 (class 0 OID 16538)
+-- Dependencies: 210
+-- Data for Name: scores; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".scores ("userID", "guildID", score) FROM stdin;
+1	1	955
+2	1	854
+102	1	50
+4	1	450
+102	50	1700
+2	50	153
+4	50	189
+121121ea11	50	2250
+121121ea1111	50	2250
+121121ea111	50	2250
+23132114111	50	2250
+231321141	50	2250
+121121ea11111	50	2250
+2313211411	50	2250
+231321	50	2250
+1211	50	1700
+121	50	2250
+121121	50	2250
+12112	50	2250
+23132114	50	2250
+121121ea1	50	2250
+231321141111	50	2250
+ssw	50	2068
+121121ea	50	2250
+1	50	2677
+1	871361110601769010	30
+1211	871361110601769010	0
+\.
+
+
+--
+-- TOC entry 4090 (class 0 OID 16562)
+-- Dependencies: 213
+-- Data for Name: song_queue; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".song_queue (id, "userID", "guildID", "songID", "timestamp") FROM stdin;
+1	1	1	4	2009-12-31 12:00:00
+2	1	1	4	2009-12-31 12:00:00
+3	1	1	4	2009-12-31 12:00:00
+4	1	1	4	2009-12-31 12:00:00
+5	1	1	4	2009-12-31 12:00:00
+6	1	1	4	2009-12-31 12:00:00
+7	1	1	4	2009-12-31 12:00:00
+8	1	1	4	2009-12-31 12:00:00
+9	1	1	4	2009-12-31 12:00:00
+10	1	1	4	2009-12-31 12:00:00
+11	1	1	4	2009-12-31 12:00:00
+12	1	1	4	2009-12-31 12:00:00
+13	1	1	4	2009-12-31 12:00:00
+14	1	1	4	2009-12-31 12:00:00
+15	1	1	4	2009-12-31 12:00:00
+16	1	1	4	2009-12-31 12:00:00
+17	1	1	4	2009-12-31 12:00:00
+18	1	1	4	2009-12-31 12:00:00
+19	1	1	4	2009-12-31 12:00:00
+22	1	1	4	2009-12-31 12:00:00
+23	1	1	4	2009-12-31 12:00:00
+24	1	1	4	2009-12-31 12:00:00
+27	1	1	4	2009-12-31 12:00:00
+28	1	1	4	2009-12-31 12:00:00
+29	1	1	4	2009-12-31 12:00:00
+32	1	1	4	2009-12-31 12:00:00
+33	1	1	4	2009-12-31 12:00:00
+34	1	1	4	2009-12-31 12:00:00
+35	1	1	4	2009-12-31 12:00:00
+36	1	1	4	2009-12-31 12:00:00
+37	1	1	4	2009-12-31 12:00:00
+38	1	1	4	2009-12-31 12:00:00
+39	1	1	4	2009-12-31 12:00:00
+40	1	1	4	2009-12-31 12:00:00
+41	1	1	4	2009-12-31 12:00:00
+42	1	1	4	2009-12-31 12:00:00
+43	1	1	4	2009-12-31 12:00:00
+44	1	1	4	2009-12-31 12:00:00
+45	1	1	4	2009-12-31 12:00:00
+46	1	1	4	2009-12-31 12:00:00
+47	1	1	4	2009-12-31 12:00:00
+48	1	1	4	2009-12-31 12:00:00
+49	1	1	4	2009-12-31 12:00:00
+50	1	1	4	2009-12-31 12:00:00
+51	1	1	4	2009-12-31 12:00:00
+52	1	1	4	2009-12-31 12:00:00
+53	1	1	4	2009-12-31 12:00:00
+54	1	1	4	2009-12-31 12:00:00
+55	1	1	4	2009-12-31 12:00:00
+56	1	1	4	2009-12-31 12:00:00
+57	1	1	4	2009-12-31 12:00:00
+58	1	1	4	2009-12-31 12:00:00
+59	1	1	4	2009-12-31 12:00:00
+64	2	1	4	2009-12-31 12:00:00
+65	2	1	4	2009-12-31 12:00:00
+66	2	1	4	2009-12-31 12:00:00
+67	2	1	4	2009-12-31 12:00:00
+68	2	1	4	2009-12-31 12:00:00
+69	2	1	4	2009-12-31 12:00:00
+70	2	1	4	2009-12-31 12:00:00
+71	2	1	4	2009-12-31 12:00:00
+72	2	1	4	2009-12-31 12:00:00
+73	2	1	4	2009-12-31 12:00:00
+74	2	1	4	2009-12-31 12:00:00
+75	2	1	4	2009-12-31 12:00:00
+76	2	1	4	2009-12-31 12:00:00
+77	1	50	4	2009-12-31 12:00:00
+78	ssw	50	27	2009-12-31 12:00:00
+79	1	50	27	2009-12-31 12:00:00
+80	1	50	27	2009-12-31 12:00:00
+81	1	50	27	2009-12-31 12:00:00
+82	2	50	27	2009-12-31 12:00:00
+83	2	50	27	2009-12-31 12:00:00
+84	2	50	27	2009-12-31 12:00:00
+85	2	50	27	2009-12-31 12:00:00
+86	2	50	27	2009-12-31 12:00:00
+87	2	50	27	2009-12-31 12:00:00
+88	2	50	27	2009-12-31 12:00:00
+89	1	50	27	2009-12-31 12:00:00
+90	2	50	27	2009-12-31 12:00:00
+91	1	50	27	2009-12-31 12:00:00
+92	2	50	27	2009-12-31 12:00:00
+93	1	50	27	2009-12-31 12:00:00
+94	2	50	27	2009-12-31 12:00:00
+95	2	50	27	2009-12-31 12:00:00
+96	1	50	27	2009-12-31 12:00:00
+97	2	50	27	2009-12-31 12:00:00
+98	1	50	27	2009-12-31 12:00:00
+99	2	50	27	2009-12-31 12:00:00
+100	1	50	27	2009-12-31 12:00:00
+101	1	50	27	2009-12-31 12:00:00
+104	1	1	4	2009-12-31 12:00:00
+105	1	50	4	2009-12-31 12:00:00
+106	1	50	4	2009-12-31 12:00:00
+110	1	1	4	2009-12-31 12:00:00
+111	1	1	4	2009-12-31 12:00:00
+112	1	1	6	2009-12-31 12:00:00
+113	1	1	6	2009-12-31 12:00:00
+114	1	1	6	2009-12-31 12:00:00
+115	1	1	6	2009-12-31 12:00:00
+116	1	1	6	2009-12-31 12:00:00
+117	1	1	6	2009-12-31 12:00:00
+118	1	1	6	2009-12-31 12:00:00
+119	1	1	6	2009-12-31 12:00:00
+120	1	1	6	2009-12-31 12:00:00
+121	1	1	6	2009-12-31 12:00:00
+122	1	1	6	2009-12-31 12:00:00
+123	1	1	6	2009-12-31 12:00:00
+124	1	1	6	2009-12-31 12:00:00
+125	1	1	6	2009-12-31 12:00:00
+126	1	1	6	2009-12-31 12:00:00
+127	1	1	6	2009-12-31 12:00:00
+128	1	1	6	2009-12-31 12:00:00
+129	1	50	36	2009-12-31 12:00:00
+130	1	50	36	2009-12-31 12:00:00
+131	1	50	36	2009-12-31 12:00:00
+132	1	50	36	2009-12-31 12:00:00
+133	1	50	36	2009-12-31 12:00:00
+134	1	50	36	2009-12-31 12:00:00
+135	1	50	36	2009-12-31 12:00:00
+136	1	50	36	2009-12-31 12:00:00
+\.
+
+
+--
+-- TOC entry 4080 (class 0 OID 16421)
+-- Dependencies: 203
+-- Data for Name: songs; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".songs (id, title, url, "durationSeconds") FROM stdin;
+4	jebait	youtube.com/aa	1234
+6	jebait	youtube.com/aad	1234
+7	jebaite233	youtube.com/ddwsdd	1234
+8	jebaite233	youtube.com/sasdacc	1234
+12	huhuuuu	youtube.com/aads	20
+14	tiiitle	uuuuurl.com	200
+20	huhuuuu	youtube.com/aadsa	20
+24	begging	youtube.com/newSuperSondggssss	12
+25	begging	youtube.com/newSuperSondggsssss	0
+27	begging	youtube.com/hhuussssx	0
+36	begging	youtube.com/hhusussssx	0
+41	begging	youtube.com/hhuussssxs	0
+45	jebaite23311s	youtube.com/sasdacc1ss	1234
+48	PSY - GANGNAM STYLE(강남스타일) M/V	http://www.youtube.com/watch?v=9bZkp7q19f0	253
+49	COMMUNITY Best Scene (Haaah Gaaaay)	http://www.youtube.com/watch?v=6K4yATbbDxw	153
+50	YA HAYYY	http://www.youtube.com/watch?v=uCKb7RrhgsQ	32
+51	Heyyy	http://www.youtube.com/watch?v=ZhqbQl-9JpE	220
+52	HEYYEYAAEYAAAEYAEYAA	http://www.youtube.com/watch?v=ZZ5LpwO-An4	127
+53	Hehehehe	http://www.youtube.com/watch?v=dUhtD1X_XNg	222
+54	Ehyeye	http://www.youtube.com/watch?v=5lrhXQ7tG6k	16
+55	Pentatonix - Hallelujah (Official Video)	http://www.youtube.com/watch?v=LRP8d7hhpoQ	306
+56	3. Liga: Freiburg II holt einen Punkt gegen Halle | SWR Sport	http://www.youtube.com/watch?v=Ev3i6bHTApw	577
+57	Dej Loaf - Hey there feat Future [LYRICS]	http://www.youtube.com/watch?v=IHMemhXft2k	258
+58	Queen - Action This Day (Official Lyric Video)	http://www.youtube.com/watch?v=LHt5hxYVZac	221
+59	Plain White T's - Hey There Delilah (Official Video)	http://www.youtube.com/watch?v=h_m-BjrxmgI	243
+60	MEUTE - Hey Hey (Dennis Ferrer Rework)	http://www.youtube.com/watch?v=NYtjttnp1Rs	465
+61	begging	youtube.com/ddads	0
+62	Pink Floyd - "Hey You"	http://www.youtube.com/watch?v=TFjmvfRvjTc	282
+63	Katzenjammer - My Dear (Official Video)	http://www.youtube.com/watch?v=6KybLisH3v8	189
+64	My God (Live) feat. Mr. Talkbox	http://www.youtube.com/watch?v=GcdNI3DB3to	266
+65	JRL - No Way (Lyric Video)	http://www.youtube.com/watch?v=sJcHOgZ4zhk	186
+66	Santesh - Shocked ft. Amos Paul (Official Music Video)	http://www.youtube.com/watch?v=r3ldqYJl_Uc	187
+67	Olivia O’Brien with Oli Sykes of Bring Me The Horizon - No More Friends (Visualizer)	http://www.youtube.com/watch?v=Sd2UoVEXx7o	194
+68	Scooter - The Logical Song (Official Video)	http://www.youtube.com/watch?v=4YxTa1AUqps	240
+69	LADIPOE feat. Simi - Know You (Official Music Video)	http://www.youtube.com/watch?v=Mude7cCSs9s	257
+70	CVC Words | Letter a | Consonant Vowel Consonant | Phonics Song | Jack Hartmann	http://www.youtube.com/watch?v=oDVAhDyHZaA	140
+71	[FREE] 187 x GZUZ x Bonez MC Type Beat "9MM" (Prod. by LV)	http://www.youtube.com/watch?v=KX26vdlHgrw	167
+72	康士坦的變化球 KST－Hi There （Official Music Video）	http://www.youtube.com/watch?v=gnL-bVDf7Tc	448
+73	Top Funny Memes #29	http://www.youtube.com/watch?v=x-Jo8UejSdw	315
+74	Motion Graphics File : Countdown	http://www.youtube.com/watch?v=nBnaYNWmTWo	17
+\.
+
+
+--
+-- TOC entry 4078 (class 0 OID 16411)
+-- Dependencies: 201
+-- Data for Name: users; Type: TABLE DATA; Schema: testSchema; Owner: doadmin
+--
+
+COPY "testSchema".users (id, "googleAuthToken", "spotifyAuthToken") FROM stdin;
+146	\N	\N
+1	\N	\N
+2	\N	\N
+4	\N	\N
+53	\N	\N
+53a	\N	\N
+52	\N	\N
+101	\N	\N
+78	\N	\N
+79	\N	\N
+102	\N	\N
+ssw	\N	\N
+112	\N	\N
+113	\N	\N
+114	\N	\N
+115	\N	\N
+116	\N	\N
+117	\N	\N
+118	\N	\N
+119	\N	\N
+120	\N	\N
+121	\N	\N
+12112	\N	\N
+121121	\N	\N
+121121ea	\N	\N
+121121ea1	\N	\N
+121121ea11	\N	\N
+121121ea111	\N	\N
+121121ea1111	\N	\N
+121121ea11111	\N	\N
+231321	\N	\N
+2313211	\N	\N
+23132112	\N	\N
+23132114	\N	\N
+231321141	\N	\N
+2313211411	\N	\N
+23132114111	\N	\N
+231321141111	\N	\N
+1012	\N	\N
+10121	\N	\N
+1211	\N	\N
+\.
+
+
+--
+-- TOC entry 4106 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: interactions_id_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema".interactions_id_seq', 31, true);
+
+
+--
+-- TOC entry 4107 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: payments_paymentID_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema"."payments_paymentID_seq"', 1, false);
+
+
+--
+-- TOC entry 4108 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: payments_premiumID_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema"."payments_premiumID_seq"', 1, false);
+
+
+--
+-- TOC entry 4109 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: premium_guilds_premiumID_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema"."premium_guilds_premiumID_seq"', 1, false);
+
+
+--
+-- TOC entry 4110 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: song_queue_songID_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema"."song_queue_songID_seq"', 1, false);
+
+
+--
+-- TOC entry 4111 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: song_queue_spotID_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema"."song_queue_spotID_seq"', 161, true);
+
+
+--
+-- TOC entry 4112 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: songs_id_seq; Type: SEQUENCE SET; Schema: testSchema; Owner: doadmin
+--
+
+SELECT pg_catalog.setval('"testSchema".songs_id_seq', 74, true);
+
+
+--
+-- TOC entry 3922 (class 2606 OID 16603)
+-- Name: guilds guilds_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".guilds
+    ADD CONSTRAINT guilds_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3934 (class 2606 OID 16595)
+-- Name: interactions interactions_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".interactions
+    ADD CONSTRAINT interactions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3936 (class 2606 OID 16681)
+-- Name: library library_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".library
+    ADD CONSTRAINT library_pkey PRIMARY KEY ("userID", "guildID", "songID");
+
+
+--
+-- TOC entry 3926 (class 2606 OID 16532)
+-- Name: payments payments_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3924 (class 2606 OID 16513)
+-- Name: premium_guilds premium_guilds_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".premium_guilds
+    ADD CONSTRAINT premium_guilds_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3928 (class 2606 OID 16545)
+-- Name: scores scores_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".scores
+    ADD CONSTRAINT scores_pkey PRIMARY KEY ("userID", "guildID");
+
+
+--
+-- TOC entry 3930 (class 2606 OID 16673)
+-- Name: scores scores_userID_guildID_key; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".scores
+    ADD CONSTRAINT "scores_userID_guildID_key" UNIQUE ("userID", "guildID");
+
+
+--
+-- TOC entry 3932 (class 2606 OID 16572)
+-- Name: song_queue song_queue_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".song_queue
+    ADD CONSTRAINT song_queue_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3918 (class 2606 OID 16429)
+-- Name: songs songs_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".songs
+    ADD CONSTRAINT songs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3920 (class 2606 OID 16666)
+-- Name: songs songs_url_key; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".songs
+    ADD CONSTRAINT songs_url_key UNIQUE (url);
+
+
+--
+-- TOC entry 3916 (class 2606 OID 16624)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3944 (class 2606 OID 16667)
+-- Name: interactions interactions_id_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".interactions
+    ADD CONSTRAINT interactions_id_fkey FOREIGN KEY (id) REFERENCES "testSchema".song_queue(id) NOT VALID;
+
+
+--
+-- TOC entry 3946 (class 2606 OID 16687)
+-- Name: library library_guildID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".library
+    ADD CONSTRAINT "library_guildID_fkey" FOREIGN KEY ("guildID") REFERENCES "testSchema".guilds(id);
+
+
+--
+-- TOC entry 3947 (class 2606 OID 16692)
+-- Name: library library_songID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".library
+    ADD CONSTRAINT "library_songID_fkey" FOREIGN KEY ("songID") REFERENCES "testSchema".songs(id);
+
+
+--
+-- TOC entry 3945 (class 2606 OID 16682)
+-- Name: library library_userID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".library
+    ADD CONSTRAINT "library_userID_fkey" FOREIGN KEY ("userID") REFERENCES "testSchema".users(id);
+
+
+--
+-- TOC entry 3938 (class 2606 OID 16533)
+-- Name: payments payments_premiumID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".payments
+    ADD CONSTRAINT "payments_premiumID_fkey" FOREIGN KEY ("premiumID") REFERENCES "testSchema".premium_guilds(id) ON UPDATE CASCADE;
+
+
+--
+-- TOC entry 3937 (class 2606 OID 16604)
+-- Name: premium_guilds premium_guilds_guildID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".premium_guilds
+    ADD CONSTRAINT "premium_guilds_guildID_fkey" FOREIGN KEY ("guildID") REFERENCES "testSchema".guilds(id) NOT VALID;
+
+
+--
+-- TOC entry 3939 (class 2606 OID 16609)
+-- Name: scores scores_guildID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".scores
+    ADD CONSTRAINT "scores_guildID_fkey" FOREIGN KEY ("guildID") REFERENCES "testSchema".guilds(id) ON UPDATE CASCADE;
+
+
+--
+-- TOC entry 3940 (class 2606 OID 16625)
+-- Name: scores scores_userID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".scores
+    ADD CONSTRAINT "scores_userID_fkey" FOREIGN KEY ("userID") REFERENCES "testSchema".users(id) ON UPDATE CASCADE;
+
+
+--
+-- TOC entry 3942 (class 2606 OID 16614)
+-- Name: song_queue song_queue_guildID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".song_queue
+    ADD CONSTRAINT "song_queue_guildID_fkey" FOREIGN KEY ("guildID") REFERENCES "testSchema".guilds(id) ON UPDATE CASCADE;
+
+
+--
+-- TOC entry 3941 (class 2606 OID 16583)
+-- Name: song_queue song_queue_songID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".song_queue
+    ADD CONSTRAINT "song_queue_songID_fkey" FOREIGN KEY ("songID") REFERENCES "testSchema".songs(id) ON UPDATE CASCADE;
+
+
+--
+-- TOC entry 3943 (class 2606 OID 16630)
+-- Name: song_queue song_queue_userID_fkey; Type: FK CONSTRAINT; Schema: testSchema; Owner: doadmin
+--
+
+ALTER TABLE ONLY "testSchema".song_queue
+    ADD CONSTRAINT "song_queue_userID_fkey" FOREIGN KEY ("userID") REFERENCES "testSchema".users(id) ON UPDATE CASCADE;
+
+
+-- Completed on 2021-10-15 10:01:28 CEST
+
+--
+-- PostgreSQL database dump complete
+--
+

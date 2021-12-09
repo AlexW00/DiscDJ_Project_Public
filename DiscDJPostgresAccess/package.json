@@ -1,0 +1,21 @@
+{
+  "name": "discdjhistory",
+  "version": "1.0.0",
+  "description": "History of songs access",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Gen#1234",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-load-routes": "^1.0.1",
+    "pg-promise": "^10.11.0",
+    "redis": "^3.1.2",
+    "redis-lock": "^0.1.4",
+    "winston": "^3.3.3"
+  }
+}

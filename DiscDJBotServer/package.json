@@ -1,0 +1,25 @@
+{
+  "name": "discdj",
+  "version": "1.0.0",
+  "description": "Discord Bot that lets users request songs and vote on them",
+  "main": "index.js",
+  "dependencies": {
+    "@discordjs/rest": "0.1.0-canary.0",
+    "@discordjs/voice": "^0.5.5",
+    "discord.js": "^13.0.0-dev.t1627949059.35fa3b3",
+    "esm": "^3.2.25",
+    "superagent": "^6.1.0",
+    "winston": "^3.3.3",
+    "youtube-sr": "^4.1.7",
+    "ytdl-core": "^4.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node -r esm index.js"
+  },
+  "author": "Alexander Weichart",
+  "license": "MIT"
+}
